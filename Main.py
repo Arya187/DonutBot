@@ -211,13 +211,13 @@ async def p(ctx, url : str):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': str('./' + filename + '.opus',
+        'outtmpl': str('./' + filename + '.opus'),
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'opus',
         }],
     }
-    if song_there == False:
+    if song_there ==12 False:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         for file in os.listdir("./"):
