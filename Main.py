@@ -136,12 +136,9 @@ async def on_message(message):
     elif message.content.startswith('$'):
          await client.process_commands(message)
 
-
 #
-#Errors
+#Commands 
 #
-
-
 @client.command(aliases=['k'])
 @commands.has_permissions(kick_members = True)
 async def kick(ctx, member : discord.Member,*, reason = "No reason provided"):
@@ -209,19 +206,17 @@ async def error(ctx,error):
 
 @client.command(aliases = ['join_vc'])
 async def join(ctx):
-    
     voiceChannel = ctx.author.voice.channel
     await voiceChannel.connect()
 
 
 @client.command(name="p",aliases = ['play'])
-async def p(ctx, url : str):
+async def play(ctx, url : str):
     filename = YTextract.video_id(url)
     song_there = False
     for obj in os.listdir('./Audio'):
         if obj == str(filename + ".opus"):
             song_there = True
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': str('./' + filename + '.opus'),
@@ -237,6 +232,11 @@ async def p(ctx, url : str):
             if file.endswith(".opus"):
                 os.rename(file,filename + ".opus")
                 os.replace(filename + ".opus",cwd + "/Audio/" + filename + ".opus")
+    try:
+        await join(ctx)
+    except:
+        pass
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     voice.play(discord.FFmpegPCMAudio("./Audio/" + filename + ".opus"))
 
 
