@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Custom
+!Audio/.nomedia
+Audio/*
+token.txt
+reddit_login.json
+
 # Distribution / packaging
 .Python
 build/
