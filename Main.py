@@ -18,13 +18,13 @@ cwd = str(pathlib.Path.cwd())
 
 my_secret = ""
 
-
 reddit = ''
 REDDIT_USER = ""
 REDDIT_PASS = ""
 REDDIT_ID = ""
 REDDIT_SECRET = ""
 
+queue = []
 
 #reddit login code
 if True:
@@ -237,7 +237,12 @@ async def play(ctx, url : str):
     except:
         pass
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    voice.play(discord.FFmpegPCMAudio("./Audio/" + filename + ".opus"))
+    try:
+        voice.play(discord.FFmpegPCMAudio("./Audio/" + filename + ".opus"))
+    except discord.ext.commands.errors.CommandInvokeError:
+        queue.append(url)
+
+
 
 
 @client.command()
