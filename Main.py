@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import asyncio
 import praw
 import random
+from praw import reddit
 import youtube_dl
 import pytube
 import pathlib
@@ -17,6 +18,8 @@ cwd = str(pathlib.Path.cwd())
 
 my_secret = ""
 
+
+reddit = ''
 REDDIT_USER = ""
 REDDIT_PASS = ""
 REDDIT_ID = ""
@@ -74,10 +77,10 @@ def init():
         REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
         print("using json")
     reddit = praw.Reddit(client_id = REDDIT_ID,
-    client_secret = REDDIT_SECRET,
-    username = REDDIT_USER,
-    password = REDDIT_PASS,
-    user_agent = "UwU")
+                        client_secret = REDDIT_SECRET,
+                        username = REDDIT_USER,
+                        password = REDDIT_PASS,
+                        user_agent = "UwU")
     client.run(my_secret)
 
 asyncio.get_event_loop().set_debug(True)
@@ -302,4 +305,5 @@ async def info(ctx):
     embed.add_field(name = "**Syntax**", value = "$whois <member>")
     await ctx.send(embed = embed)
 
+keep_alive()
 init()
