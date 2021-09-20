@@ -22,62 +22,63 @@ REDDIT_PASS = ""
 REDDIT_ID = ""
 REDDIT_SECRET = ""
 
-
-if os.environ.get('BOT_TOKEN') is not None:
-  my_secret = os.environ['BOT_TOKEN']
-else:
-    if os.path.exists("token.txt") == False:
-        tok = open("token.txt","w")
-        tok.write("")
-        tok.close
-        print("please put token in token.txt or add Evironment Variable called 'BOT_TOKEN' containing the token")
-        exit()
+def init():
+    if os.environ.get('BOT_TOKEN') is not None:
+        my_secret = os.environ['BOT_TOKEN']
     else:
-        my_secret = open("token.txt","r")
-        my_secret = my_secret.read()
-
-
-
-if os.path.exists("reddit_login.json") == False:
-    reddit_login = {
-        "REDDIT_USER":"",
-        "REDDIT_PASS":"",
-        "REDDIT_SECRET":"",
-        "REDDIT_ID":"",}
-    reddit_file = open("reddit_login.json","w")
-    reddit_file.write(json.dumps(reddit_login,indent=4))
-    reddit_file.close()
-    print("check reddit_login.json")
-
-reddit_login = open("reddit_login.json","r")
-reddit_login = json.load(reddit_login)
-
-if os.environ.get('REDDIT_USER') is not None:
-    REDDIT_USER = os.environ['REDDIT_USER']
-else:
-    REDDIT_USER = reddit_login["REDDIT_USER"]
-
-if os.environ.get('REDDIT_PASS') is not None:
-    REDDIT_PASS = os.environ['REDDIT_PASS']
-else:
-    REDDIT_PASS = reddit_login["REDDIT_PASS"]
-
-if os.environ.get('REDDIT_ID') is not None:
-    REDDIT_ID = os.environ['REDDIT_ID']
-else:
-    REDDIT_ID = reddit_login["REDDIT_ID"]
-
-if os.environ.get('REDDIT_SECRET') is not None:
-    REDDIT_SECRET = os.environ['REDDIT_SECRET']
-else:
-    REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
-
-
-reddit = praw.Reddit(client_id = REDDIT_ID,
-                    client_secret = REDDIT_SECRET,
-                    username = REDDIT_USER,
-                    password = REDDIT_PASS,
-                    user_agent = "UwU")
+        if os.path.exists("token.txt") == False:
+            tok = open("token.txt","w")
+            tok.write("")
+            tok.close
+            print("please put token in token.txt or add Evironment Variable called 'BOT_TOKEN' containing the token")
+            exit()
+        else:
+            my_secret = open("token.txt","r")
+            my_secret = my_secret.read()
+    
+    if os.path.exists("reddit_login.json") == False:
+        reddit_login = {
+            "REDDIT_USER":"",
+            "REDDIT_PASS":"",
+            "REDDIT_SECRET":"",
+            "REDDIT_ID":"",}
+        reddit_file = open("reddit_login.json","w")
+        reddit_file.write(json.dumps(reddit_login,indent=4))
+        reddit_file.close()
+        print("check reddit_login.json")
+    
+    reddit_login = open("reddit_login.json","r")
+    reddit_login = json.load(reddit_login)
+    if os.environ.get('REDDIT_USER') is not None:
+        REDDIT_USER = os.environ['REDDIT_USER']
+        print("using env var")
+    else:
+        REDDIT_USER = reddit_login["REDDIT_USER"]
+        print("using json")
+    if os.environ.get('REDDIT_PASS') is not None:
+        REDDIT_PASS = os.environ['REDDIT_PASS']
+        print("using env var")
+    else:
+        REDDIT_PASS = reddit_login["REDDIT_PASS"]
+        print("using json")
+    if os.environ.get('REDDIT_ID') is not None:
+        REDDIT_ID = os.environ['REDDIT_ID']
+        print("using env var")
+    else:
+        REDDIT_ID = reddit_login["REDDIT_ID"]
+        print("using json")
+    if os.environ.get('REDDIT_SECRET') is not None:
+        REDDIT_SECRET = os.environ['REDDIT_SECRET']
+        print("using env var")
+    else:
+        REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
+        print("using json")
+    reddit = praw.Reddit(client_id = REDDIT_ID,
+    client_secret = REDDIT_SECRET,
+    username = REDDIT_USER,
+    password = REDDIT_PASS,
+    user_agent = "UwU")
+    client.run(my_secret)
 
 asyncio.get_event_loop().set_debug(True)
 
@@ -301,5 +302,4 @@ async def info(ctx):
     embed.add_field(name = "**Syntax**", value = "$whois <member>")
     await ctx.send(embed = embed)
 
-keep_alive()
-client.run(my_secret)
+init()
