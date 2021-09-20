@@ -81,6 +81,9 @@ def init():
                         username = REDDIT_USER,
                         password = REDDIT_PASS,
                         user_agent = "UwU")
+
+    if os.path.exists("./Audio/") == False:
+        os.mkdir("./Audio")
     client.run(my_secret)
 
 asyncio.get_event_loop().set_debug(True)
