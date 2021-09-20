@@ -81,7 +81,6 @@ def init():
                         username = REDDIT_USER,
                         password = REDDIT_PASS,
                         user_agent = "UwU")
-
     if os.path.exists("./Audio/") == False:
         os.mkdir("./Audio")
     client.run(my_secret)
@@ -208,16 +207,14 @@ async def join(ctx):
     await voiceChannel.connect()
 
 
-@client.command(aliases = ['play'])
+@client.command(name="p",aliases = ['play'])
 async def p(ctx, url : str):
     filename = YTextract.video_id(url)
     song_there = False
     for obj in os.listdir('./Audio'):
         if obj == str(filename + ".opus"):
             song_there = True
-    
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': './tmp.opus',
@@ -233,7 +230,6 @@ async def p(ctx, url : str):
             if file.endswith(".opus"):
                 os.rename(file,filename + ".opus")
                 os.replace(filename + ".opus",cwd + "/Audio/" + filename + ".opus")
-    
     voice.play(discord.FFmpegPCMAudio("./Audio/" + filename + ".opus"))
 
 
