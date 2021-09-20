@@ -38,18 +38,16 @@ def init():
         else:
             my_secret = open("token.txt","r")
             my_secret = my_secret.read()
-    
     if os.path.exists("reddit_login.json") == False:
         reddit_login = {
             "REDDIT_USER":"",
             "REDDIT_PASS":"",
             "REDDIT_SECRET":"",
-            "REDDIT_ID":"",}
+            "REDDIT_ID":""}
         reddit_file = open("reddit_login.json","w")
         reddit_file.write(json.dumps(reddit_login,indent=4))
         reddit_file.close()
         print("check reddit_login.json")
-    
     reddit_login = open("reddit_login.json","r")
     reddit_login = json.load(reddit_login)
     if os.environ.get('REDDIT_USER') is not None:
@@ -76,14 +74,10 @@ def init():
     else:
         REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
         print("using json")
-    reddit = praw.Reddit(client_id = REDDIT_ID,
-                        client_secret = REDDIT_SECRET,
-                        username = REDDIT_USER,
-                        password = REDDIT_PASS,
-                        user_agent = "UwU")
     if os.path.exists("./Audio/") == False:
         os.mkdir("./Audio")
     client.run(my_secret)
+    reddit = praw.Reddit(client_id = REDDIT_ID,client_secret = REDDIT_SECRET,username = REDDIT_USER,password = REDDIT_PASS,user_agent = "UwU")
 
 asyncio.get_event_loop().set_debug(True)
 
@@ -217,7 +211,7 @@ async def p(ctx, url : str):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': './tmp.opus',
+        'outtmpl': str('./' + filename + '.opus',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'opus',
