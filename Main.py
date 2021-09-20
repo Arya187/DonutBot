@@ -26,6 +26,8 @@ REDDIT_SECRET = ""
 
 queue = []
 
+
+
 #reddit login code
 if True:
     if os.path.exists("reddit_login.json") == False:
@@ -42,29 +44,25 @@ if True:
     reddit_login = json.load(reddit_login)
     if True:
         if os.environ.get('REDDIT_USER') is not None:
-            REDDIT_USER = os.environ['REDDIT_USER']
-            print("using env var")
+            REDDIT_USER = str(os.environ['REDDIT_USER'])
         else:
             REDDIT_USER = reddit_login["REDDIT_USER"]
-            print("using json")
+        print(REDDIT_USER)
         if os.environ.get('REDDIT_PASS') is not None:
-            REDDIT_PASS = os.environ['REDDIT_PASS']
-            print("using env var")
+            REDDIT_PASS = str(os.environ['REDDIT_PASS'])
         else:
             REDDIT_PASS = reddit_login["REDDIT_PASS"]
-            print("using json")
+        print(REDDIT_PASS)
         if os.environ.get('REDDIT_ID') is not None:
-            REDDIT_ID = os.environ['REDDIT_ID']
-            print("using env var")
+            REDDIT_ID = str(os.environ['REDDIT_ID'])
         else:
             REDDIT_ID = reddit_login["REDDIT_ID"]
-            print("using json")
+        print(REDDIT_ID)
         if os.environ.get('REDDIT_SECRET') is not None:
-            REDDIT_SECRET = os.environ['REDDIT_SECRET']
-            print("using env var")
+            REDDIT_SECRET = str(os.environ['REDDIT_SECRET'])
         else:
             REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
-            print("using json")
+        print(REDDIT_SECRET)
     if os.path.exists("./Audio/") == False:
         os.mkdir("./Audio")
     
