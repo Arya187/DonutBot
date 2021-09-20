@@ -25,6 +25,57 @@ REDDIT_PASS = ""
 REDDIT_ID = ""
 REDDIT_SECRET = ""
 
+
+#reddit login code
+if True:
+    if os.path.exists("reddit_login.json") == False:
+        reddit_login = {
+            "REDDIT_USER":"",
+            "REDDIT_PASS":"",
+            "REDDIT_SECRET":"",
+            "REDDIT_ID":""}
+        reddit_file = open("reddit_login.json","w")
+        reddit_file.write(json.dumps(reddit_login,indent=4))
+        reddit_file.close()
+        print("check reddit_login.json")
+    reddit_login = open("reddit_login.json","r")
+    reddit_login = json.load(reddit_login)
+    if True:
+        if os.environ.get('REDDIT_USER') is not None:
+            REDDIT_USER = os.environ['REDDIT_USER']
+            print("using env var")
+        else:
+            REDDIT_USER = reddit_login["REDDIT_USER"]
+            print("using json")
+        if os.environ.get('REDDIT_PASS') is not None:
+            REDDIT_PASS = os.environ['REDDIT_PASS']
+            print("using env var")
+        else:
+            REDDIT_PASS = reddit_login["REDDIT_PASS"]
+            print("using json")
+        if os.environ.get('REDDIT_ID') is not None:
+            REDDIT_ID = os.environ['REDDIT_ID']
+            print("using env var")
+        else:
+            REDDIT_ID = reddit_login["REDDIT_ID"]
+            print("using json")
+        if os.environ.get('REDDIT_SECRET') is not None:
+            REDDIT_SECRET = os.environ['REDDIT_SECRET']
+            print("using env var")
+        else:
+            REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
+            print("using json")
+    if os.path.exists("./Audio/") == False:
+        os.mkdir("./Audio")
+    
+    reddit = praw.Reddit(client_id = REDDIT_ID,
+        client_secret = REDDIT_SECRET,
+        username = REDDIT_USER,
+        password = REDDIT_PASS,
+        user_agent = "UwU",)
+#^reddit login code
+
+#Bot Login Code
 def init():
     if os.environ.get('BOT_TOKEN') is not None:
         my_secret = os.environ['BOT_TOKEN']
@@ -38,46 +89,8 @@ def init():
         else:
             my_secret = open("token.txt","r")
             my_secret = my_secret.read()
-    if os.path.exists("reddit_login.json") == False:
-        reddit_login = {
-            "REDDIT_USER":"",
-            "REDDIT_PASS":"",
-            "REDDIT_SECRET":"",
-            "REDDIT_ID":""}
-        reddit_file = open("reddit_login.json","w")
-        reddit_file.write(json.dumps(reddit_login,indent=4))
-        reddit_file.close()
-        print("check reddit_login.json")
-    reddit_login = open("reddit_login.json","r")
-    reddit_login = json.load(reddit_login)
-    if os.environ.get('REDDIT_USER') is not None:
-        REDDIT_USER = os.environ['REDDIT_USER']
-        print("using env var")
-    else:
-        REDDIT_USER = reddit_login["REDDIT_USER"]
-        print("using json")
-    if os.environ.get('REDDIT_PASS') is not None:
-        REDDIT_PASS = os.environ['REDDIT_PASS']
-        print("using env var")
-    else:
-        REDDIT_PASS = reddit_login["REDDIT_PASS"]
-        print("using json")
-    if os.environ.get('REDDIT_ID') is not None:
-        REDDIT_ID = os.environ['REDDIT_ID']
-        print("using env var")
-    else:
-        REDDIT_ID = reddit_login["REDDIT_ID"]
-        print("using json")
-    if os.environ.get('REDDIT_SECRET') is not None:
-        REDDIT_SECRET = os.environ['REDDIT_SECRET']
-        print("using env var")
-    else:
-        REDDIT_SECRET = reddit_login["REDDIT_SECRET"]
-        print("using json")
-    if os.path.exists("./Audio/") == False:
-        os.mkdir("./Audio")
     client.run(my_secret)
-    reddit = praw.Reddit(client_id = REDDIT_ID,client_secret = REDDIT_SECRET,username = REDDIT_USER,password = REDDIT_PASS,user_agent = "UwU")
+#^ Bot Login Code
 
 asyncio.get_event_loop().set_debug(True)
 
@@ -178,7 +191,7 @@ async def whois(ctx, member : discord.Member):
 @client.command()
 async def meme(ctx):
     all_subs = []
-    for submission in reddit.subreddit("memes").hot(limit=5):
+    for submission in reddit.subreddit("memes").top(limit=50):
         all_subs.append(submission)
     random_sub = random.choice(all_subs)
     name = random_sub.title
