@@ -217,7 +217,7 @@ async def p(ctx, url : str):
             'preferredcodec': 'opus',
         }],
     }
-    if song_there ==12 False:
+    if song_there == False:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         for file in os.listdir("./"):
