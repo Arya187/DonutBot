@@ -11,6 +11,7 @@ __pycache__/
 Audio/*
 token.txt
 reddit_login.json
+login.json
 
 # Distribution / packaging
 .Python
