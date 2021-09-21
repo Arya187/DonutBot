@@ -4,15 +4,18 @@ from discord.ext import commands, tasks
 import asyncio
 import praw
 import random
-from praw import reddit
 import youtube_dl
 import pytube
 import pathlib
 import json
+import pyyoutube
+
+from praw import reddit
 from pathlib import Path
 from keep_alive import keep_alive
 
 YTextract = pytube.extract
+YTAPI = ""
 
 cwd = str(pathlib.Path.cwd())
 
@@ -55,12 +58,13 @@ if True:
     REDDIT_ID = reddit_login['REDDIT_ID']
     REDDIT_SECRET = reddit_login['REDDIT_SECRET']
 
-
     reddit = praw.Reddit(client_id = REDDIT_ID,
         client_secret = REDDIT_SECRET,
         username = REDDIT_USER,
         password = REDDIT_PASS,
         user_agent = "UwU",)
+    
+    YTAPI = pyyoutube.Api(api_key=reddit_login["YOUTUBE_API"])
 #^reddit login code
 
 #Bot Login Code
