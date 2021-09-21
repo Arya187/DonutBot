@@ -219,7 +219,8 @@ async def play(ctx, url : str):
     }
     if song_there == False:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download("https://youtu.be/"+filename)
+            url = "https://youtube.com/watch?v=" + filename
+            ydl.download([url])
         for file in os.listdir("./"):
             if file.endswith(".opus"):
                 os.rename(file,filename + ".opus")
