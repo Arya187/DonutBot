@@ -51,7 +51,7 @@ if True:
         os.mkdir("./Audio")
     
     if os.environ.get('LOGIN_BOT') is not None:
-        reddit_login = json.loads(os.getenv('LOGIN_BOT'))
+        reddit_login = json.loads(str(os.getenv('LOGIN_BOT')))
         print('using environment variables for reddit login')
     REDDIT_USER = reddit_login['REDDIT_USER']
     REDDIT_PASS = reddit_login['REDDIT_PASS']
@@ -64,7 +64,7 @@ if True:
         password = REDDIT_PASS,
         user_agent = "UwU",)
     
-    YTAPI = pyyoutube.Api(api_key=reddit_login["YOUTUBE_API"])
+
 #^reddit login code
 
 #Bot Login Code
@@ -219,7 +219,7 @@ async def play(ctx, url : str):
     }
     if song_there == False:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
+            ydl.download("https://youtu.be/"+filename)
         for file in os.listdir("./"):
             if file.endswith(".opus"):
                 os.rename(file,filename + ".opus")
