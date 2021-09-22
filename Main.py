@@ -1,3 +1,4 @@
+from typing import Text
 import discord
 import os
 from discord.ext import commands, tasks
@@ -230,6 +231,7 @@ async def join(ctx):
 async def play(ctx, url : str):
     filename = YTextract.video_id(url)
     song_there = False
+    video = pytube.YouTube(url=url)
     for obj in os.listdir('./Audio'):
         if obj == str(filename + ".opus"):
             song_there = True
@@ -256,6 +258,8 @@ async def play(ctx, url : str):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     try:
         voice.play(discord.FFmpegPCMAudio("./Audio/" + filename + ".opus"))
+        print("playing: ",video.title)
+        await ctx.send("playing: "+str(video.title))
     except discord.ext.commands.errors.CommandInvokeError:
         queue.append(url)
 
