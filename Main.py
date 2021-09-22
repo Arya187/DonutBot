@@ -189,6 +189,30 @@ async def meme(ctx,subreddit="memes"):
     em.set_image(url = url)
     await ctx.send(embed = em)
 
+@client.command()
+async def render(ctx):
+    all_subs = []
+    for submission in reddit.subreddit("blender").top(limit=50):
+        all_subs.append(submission)
+    random_sub = random.choice(all_subs)
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    em.set_image(url = url)
+    await ctx.send(embed = em)
+
+@client.command()
+async def bp(ctx):
+    all_subs = []
+    for submission in reddit.subreddit("BlackPink").top(limit=50):
+        all_subs.append(submission)
+    random_sub = random.choice(all_subs)
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    em.set_image(url = url)
+    await ctx.send(embed = em)
+
 @meme.error
 async def error(ctx,error):
     if isinstance(error,discord.ext.commands.errors.CommandInvokeError):
