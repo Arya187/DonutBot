@@ -178,9 +178,9 @@ async def whois(ctx, member : discord.Member):
 
 
 @client.command()
-async def meme(ctx):
+async def meme(ctx,subreddit="memes"):
     all_subs = []
-    for submission in reddit.subreddit("memes").top(limit=50):
+    for submission in reddit.subreddit(subreddit).top(limit=50):
         all_subs.append(submission)
     random_sub = random.choice(all_subs)
     name = random_sub.title
