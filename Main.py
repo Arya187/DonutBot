@@ -181,8 +181,9 @@ async def whois(ctx, member : discord.Member):
 @client.command()
 async def meme(ctx,subreddit="memes"):
     all_subs = []
-    for submission in reddit.subreddit(subreddit).top(limit=50):
-        all_subs.append(submission)
+    for submission in reddit.subreddit(subreddit).top("day",limit=50):
+        if submission.is_self == False:
+            all_subs.append(submission)
     random_sub = random.choice(all_subs)
     name = random_sub.title
     url = random_sub.url
@@ -192,15 +193,7 @@ async def meme(ctx,subreddit="memes"):
 
 @client.command()
 async def render(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("blender").top(limit=50):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    await meme(ctx,"blender")
 
 @client.command()
 async def bp(ctx):
