@@ -218,63 +218,23 @@ async def render(ctx):
 
 @client.command()
 async def bp(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("BlackPink").top(limit=200):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    meme('BlackPink')
 
 @client.command()
 async def zerotwo(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("ZeroTwo").top(limit=200):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    meme('ZeroTwo')
 
 @client.command()
 async def waifu(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("Waifu").top(limit=200):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    meme('Waifu')
 
 @client.command()
 async def kawai(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("CuteAnimeGirls").top(limit=200):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    meme('CuteAnimeGirls')
 
 @client.command()
 async def ab(ctx):
-    all_subs = []
-    for submission in reddit.subreddit("animeboys").top(limit=200):
-        all_subs.append(submission)
-    random_sub = random.choice(all_subs)
-    name = random_sub.title
-    url = random_sub.url
-    em = discord.Embed(title = name)
-    em.set_image(url = url)
-    await ctx.send(embed = em)
+    meme('cuteanimeboys')
     
 
 @meme.error
