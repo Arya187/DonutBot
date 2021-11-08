@@ -12,7 +12,7 @@ Audio/*
 token.txt
 reddit_login.json
 login.json
-
+*.part
 # Distribution / packaging
 .Python
 build/
