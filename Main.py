@@ -177,11 +177,32 @@ async def whois(ctx, member : discord.Member):
     embed.set_footer(icon_url = ctx.author.avatar_url, text = "Requested by "+ ctx.author.name)
     await ctx.send(embed = embed)
 
+@client.command()
+async def kiss(ctx):
+    embed = discord.Embed(title = "this is a kiss")
+    url = "https://c.tenor.com/3E9wNPpnltUAAAAM/zerotwo-anime.gif"
+    embed.set_image(url = url)
+    await ctx.send(embed = embed)
+
+@client.command()
+async def spank(ctx):
+    embed = discord.Embed(title = "get spanked lol")
+    url = "https://cdn.weeb.sh/images/By2iXyFw-.gif"
+    embed.set_image(url = url)
+    await ctx.send(embed = embed)
+
+@client.command()
+async def spank2(ctx):
+    embed = discord.Embed(title = "get spanked lol")
+    url = "https://cdn.weeb.sh/images/H1n57yYP-.gif"
+    embed.set_image(url = url)
+    await ctx.send(embed = embed)
+
 
 @client.command()
 async def meme(ctx,subreddit="memes"):
     all_subs = []
-    for submission in reddit.subreddit(subreddit).top("day",limit=50):
+    for submission in reddit.subreddit(subreddit).top("day",limit=200):
         if submission.is_self == False:
             all_subs.append(submission)
     random_sub = random.choice(all_subs)
@@ -198,7 +219,7 @@ async def render(ctx):
 @client.command()
 async def bp(ctx):
     all_subs = []
-    for submission in reddit.subreddit("BlackPink").top(limit=50):
+    for submission in reddit.subreddit("BlackPink").top(limit=200):
         all_subs.append(submission)
     random_sub = random.choice(all_subs)
     name = random_sub.title
@@ -210,7 +231,43 @@ async def bp(ctx):
 @client.command()
 async def zerotwo(ctx):
     all_subs = []
-    for submission in reddit.subreddit("ZeroTwo").top(limit=50):
+    for submission in reddit.subreddit("ZeroTwo").top(limit=200):
+        all_subs.append(submission)
+    random_sub = random.choice(all_subs)
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    em.set_image(url = url)
+    await ctx.send(embed = em)
+
+@client.command()
+async def waifu(ctx):
+    all_subs = []
+    for submission in reddit.subreddit("Waifu").top(limit=200):
+        all_subs.append(submission)
+    random_sub = random.choice(all_subs)
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    em.set_image(url = url)
+    await ctx.send(embed = em)
+
+@client.command()
+async def kawai(ctx):
+    all_subs = []
+    for submission in reddit.subreddit("CuteAnimeGirls").top(limit=200):
+        all_subs.append(submission)
+    random_sub = random.choice(all_subs)
+    name = random_sub.title
+    url = random_sub.url
+    em = discord.Embed(title = name)
+    em.set_image(url = url)
+    await ctx.send(embed = em)
+
+@client.command()
+async def ab(ctx):
+    all_subs = []
+    for submission in reddit.subreddit("animeboys").top(limit=200):
         all_subs.append(submission)
     random_sub = random.choice(all_subs)
     name = random_sub.title
@@ -307,10 +364,12 @@ async def stop(ctx):
 
 @client.group(invoke_without_command = True)
 async def help(ctx):
-    embed = discord.Embed(title = "help", desription = "Use $help <command> for extended info on a specific command.", color = ctx.author.color)
+    embed = discord.Embed(title = "Help", desription = "Use $help <command> for extended info on a specific command.", color = ctx.author.color)
     embed.add_field(name = "Moderation", value = "Mute, Kick and Ban")
     embed.add_field(name = "Fun", value = "Memes")
     embed.add_field(name = "Info", value = "Info Card")
+    embed.add_field(name = "chill", value = "Music")
+    embed.add_field(name = "other", value = "Blakpink, ZeroTwo")
     await ctx.send(embed = embed)
 
 @help.command()
@@ -333,14 +392,32 @@ async def mute(ctx):
 
 @help.command()
 async def memes(ctx):
-    embed = discord.Embed(title = "Memes", description = "Send a meme from reddit", color = ctx.author.color)
+    embed = discord.Embed(title = "Memes", description = "Send a meme from memes subreddit", color = ctx.author.color)
     embed.add_field(name = "**Syntax**", value = "$meme")
+    await ctx.send(embed = embed)
+
+@help.command()
+async def blackpink(ctx):
+    embed = discord.Embed(title = "Blackpink", description = "Send a post from blackpink subreddit", color = ctx.author.color)
+    embed.add_field(name = "**Syntax**", value = "$bp")
+    await ctx.send(embed = embed)
+
+@help.command()
+async def ZeroTwo(ctx):
+    embed = discord.Embed(title = "ZeroTwo", description = "Send a post from ZeroTwo subreddit", color = ctx.author.color)
+    embed.add_field(name = "**Syntax**", value = "$zerotwo")
     await ctx.send(embed = embed)
 
 @help.command()
 async def info(ctx):
     embed = discord.Embed(title = "Info", description = "sends a information card of a member", color = ctx.author.color)
     embed.add_field(name = "**Syntax**", value = "$whois <member>")
+    await ctx.send(embed = embed)
+
+@help.command()
+async def music(ctx):
+    embed = discord.Embed(title = "music", description = "listen to music with your friends", color = ctx.author.color)
+    embed.add_field(name = "**Syntax**", value = "$p <url>")
     await ctx.send(embed = embed)
 
 keep_alive()
