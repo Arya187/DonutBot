@@ -244,7 +244,7 @@ async def error(ctx,error):
 
 
 
-@client.command(aliases = ['join_vc'])
+@client.command(aliases = ['joinvc'])
 async def join(ctx):
     voiceChannel = ctx.author.voice.channel
     await voiceChannel.connect()
