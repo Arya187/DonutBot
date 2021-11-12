@@ -218,23 +218,23 @@ async def render(ctx):
 
 @client.command()
 async def bp(ctx):
-    meme('BlackPink')
+    await meme('BlackPink')
 
 @client.command()
 async def zerotwo(ctx):
-    meme('ZeroTwo')
+    await meme('ZeroTwo')
 
 @client.command()
 async def waifu(ctx):
-    meme('Waifu')
+    await meme('Waifu')
 
 @client.command()
 async def kawai(ctx):
-    meme('CuteAnimeGirls')
+    await meme('CuteAnimeGirls')
 
 @client.command()
 async def ab(ctx):
-    meme('cuteanimeboys')
+    await meme('cuteanimeboys')
     
 
 @meme.error
