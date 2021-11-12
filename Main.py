@@ -30,7 +30,11 @@ REDDIT_SECRET = ""
 
 queue = []
 
-
+prefix = "$"
+ASCII_LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+ASCII_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DECIMAL_DIGITS = "0123456789"
+ALPHABETS = ASCII_LOWERCASE + ASCII_UPPERCASE
 
 #reddit login code
 if True:
@@ -108,26 +112,71 @@ async def error_handler(ctx, error):
 #Messages
 #
 @client.event
-async def on_message(message):
-    if message.author == client.user:
+async def on_message(ctx):
+    if ctx.author == client.user:
         return
 
-    elif message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-    elif message.content.startswith('$what up'):
-        await message.channel.send('All good How about you?')
-    elif message.content.startswith('$can you do maths'):
-        await message.channel.send('I hate maths bruh')
-    elif message.content.startswith('$oke'):
-        await message.channel.send('cool')
-    elif message.content.startswith('$who created you'):
-        await message.channel.send('Arya')
-    elif message.content.startswith('$tell us about yourself'):
-        await message.channel.send('I am a discord bot created by Arya using python on 14th september 2021')
-    elif message.content.startswith('$rules'):
-        await message.channel.send('I am too lazy to tell head over to #rules')
-    elif message.content.startswith('$'):
-         await client.process_commands(message)
+    elif ctx.content.startswith('$hello'):
+        await ctx.channel.send('Hello!')
+    elif ctx.content.startswith('$what up'):
+        await ctx.channel.send('All good How about you?')
+    elif ctx.content.startswith('$can you do maths'):
+        await ctx.channel.send('I hate maths bruh')
+    elif ctx.content.startswith('$oke'):
+        await ctx.channel.send('cool')
+    elif ctx.content.startswith('$who created you'):
+        await ctx.channel.send('<@761976593194811392> and <@587606312825913366>')
+    elif ctx.content.startswith('$tell us about yourself'):
+        await ctx.channel.send('I am a discord bot created by Arya using python on 14th september 2021')
+    elif ctx.content.startswith('$rules'):
+        await ctx.channel.send('I am too lazy to tell head over to #rules')
+    cprefix = check_prefix(ctx)
+    client.command_prefix = str(cprefix)
+    await client.process_commands(ctx)
+
+#
+## Reusable Commands
+#
+
+def get_conf(ctx,guild,prop):
+  try:
+    serverfile = open("Servers/" + str(ctx.guild.id)+ ".json","r")
+    serverconfig = json.load(serverfile)
+    val = serverconfig[str(prop)]
+    return(val)
+  except:
+    return(None)
+
+def get_user(ctx,guild,prop):
+  try:
+    serverfile = open("Users/" + str(ctx.guild.id)+ ".json","r")
+    serverconfig = json.load(serverfile)
+    val = serverconfig[str(prop)]
+    return(val)
+  except:
+    return(None)
+
+async def check_mod(ctx):
+  modrole = get_conf(ctx,ctx.guild,'mod')
+  if modrole is None:
+    await ctx.send('This server doesnt have a configured MOD role!\n try using `' + check_prefix(ctx) + 'setup mod <name or id of mod role>')
+    return(None)
+  for i in ctx.author.roles:
+    if i.id == modrole:
+      return True
+  return False
+
+def check_prefix(ctx):
+  cprefix = get_conf(ctx,ctx.guild,'prefix')
+  c = list(str(cprefix))
+  c = c[len(c) - 1]
+  if cprefix != None:
+    if c not in ALPHABETS:
+      return(cprefix)
+    else:
+      return(str(cprefix + " "))
+  else:
+    return(prefix)
 
 #
 #Commands 
@@ -218,23 +267,23 @@ async def render(ctx):
 
 @client.command()
 async def bp(ctx):
-    await meme('BlackPink')
+    await meme(ctx,'BlackPink')
 
 @client.command()
 async def zerotwo(ctx):
-    await meme('ZeroTwo')
+    await meme(ctx,'ZeroTwo')
 
 @client.command()
 async def waifu(ctx):
-    await meme('Waifu')
+    await meme(ctx,'Waifu')
 
 @client.command()
 async def kawai(ctx):
-    await meme('CuteAnimeGirls')
+    await meme(ctx,'CuteAnimeGirls')
 
 @client.command()
 async def ab(ctx):
-    await meme('cuteanimeboys')
+    await meme(ctx,'cuteanimeboys')
     
 
 @meme.error
@@ -379,6 +428,42 @@ async def music(ctx):
     embed = discord.Embed(title = "music", description = "listen to music with your friends", color = ctx.author.color)
     embed.add_field(name = "**Syntax**", value = "$p <url>")
     await ctx.send(embed = embed)
+
+
+@client.command(command="setup",help='setup the bot')
+async def setup(ctx,prop=None,value=None):
+  #only runs if the user is administrator
+    if ctx.message.author.guild_permissions.administrator:
+        if value:
+            try:
+                serverfile = open("Servers/" + str(ctx.message.guild.id)+  ".json","r")
+            except:
+                serverfile = open("Servers/" + str(ctx.message.guild.id)+ ".json","w")
+            try:
+                serverconfig = json.load(serverfile)
+            except:
+                serverconfig = {}
+            print(serverconfig)
+            if prop == "mod" or prop == "mute":
+                checkrole1 = discord.utils.get(ctx.guild.roles, name = value)
+                if checkrole1 == None:
+                    checkrole1 = ctx.guild.get_role(int(value))
+                if checkrole1 != None:
+                    serverconfig[prop] = checkrole1.id
+                    await ctx.send(prop + " is now " + str(checkrole1.name))
+                else:
+                    await ctx.send("That Role Doesnt Exist")
+            else:
+                serverconfig[str(prop)] = str(value)
+                await ctx.send(str(prop)+" is now "+str(value))
+                serverfile = open("servers/" + str(ctx.message.guild.id) + ".json","w")
+                serverconfig = json.dump(serverconfig,serverfile,indent=4)
+        else:
+            await ctx.send("How to use:\nFirst of all after -setup you have to give it two arguements, one for the property and other for the properties value. for eg:\n-setup mod <name or id of mod role>\n for now these are the properties that have a meaning:\nmod\nprefix\nmute")
+    else:
+        await ctx.channel.send("get an admin to do this")
+
+
 
 keep_alive()
 init()
